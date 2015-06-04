@@ -1,0 +1,12 @@
+node_js:
+- '0.10'
+- '0.12'
+sudo: false
+language: node_js
+script: npm run-script test-travis
+after_script: npm install coveralls@2 && cat ./coverage/lcov.info | coveralls
+before_script:
+  - psql -c 'create database "maguey_test";' -U postgres
+  - mysql -e 'create database `maguey_test`;'
+env: PG_USER=postgres MYSQL_USER=travis
+fast_finish: true
