@@ -4,6 +4,20 @@
 
 Chai assertions & test helpers for [Maguey][maguey].
 
+```js
+chai.use(require('maguey-chai'));
+
+query.raw('select 1').should.be.a.query('select 1');
+
+query.raw('select 1').then(function() {
+  adapter.should.have.executed('select 1');
+  adapter.should.have.used.clients;
+  adapter.should.have.used.oneClient;
+  adapter.should.have.clientCount(1);
+});
+```
+
+
 ## License
 
 This project is distributed under the MIT license.
