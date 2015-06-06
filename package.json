@@ -37,7 +37,7 @@
     "lodash": "^3.9.3"
   },
   "peerDependencies": {
-    "maguey": "0.0.1"
+    "maguey": "0.0.2"
   },
   "devDependencies": {
     "chai": "^2.3.0",
