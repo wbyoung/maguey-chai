@@ -26,9 +26,22 @@ describe('fake adapter', __query(function() {
     });
   });
 
+  it('can produce failures matching strings', function() {
+    adapter.fail('select');
+    return query.select('t1').execute()
+    .throw('expected failure')
+    .catch(function(e) {
+      e.should.match(/fakefail/i);
+    });
+  });
+
   it('does not produce failures when regex does not match', function() {
     adapter.fail(/nomatch/);
     return query.select('t1');
+  });
+
+  it('can disconnect', function() {
+    return adapter._disconnect();
   });
 
 }));
