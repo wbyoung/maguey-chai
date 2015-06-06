@@ -55,4 +55,10 @@ describe('assertions', __query(function() {
     });
   });
 
+  it('can negate validation of used clients', function() {
+    adapter.should.not.have.used.clients;
+    adapter.should.not.have.used.oneClient;
+    adapter.should.not.have.clientCount(1);
+  });
+
 }));
