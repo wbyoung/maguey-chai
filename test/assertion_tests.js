@@ -3,24 +3,56 @@
 require('./helpers');
 
 describe('assertions', __query(function() {
-  /* global query */
+  /* global query, adapter */
 
   it('can validate a query', function() {
-    query.select('t1').should.be.a.query('SELECT * FROM "t1"');
+    query.raw('select 1').should.be.a.query('select 1');
   });
 
   it('produces error for mismatched sql', function() {
     expect(function() {
-      query.select('t1').should.be.a.query('SELECT');
+      query.raw('select 1').should.be.a.query('select');
     })
-    .to.throw(/to have.*SELECT \* FROM "t1" ~\[\]/);
+    .to.throw(/to have.*select 1 ~\[\]/);
   });
 
   it('produces error for mismatched args', function() {
     expect(function() {
-      query.select('t1').should.be.a.query('SELECT', [5]);
+      query.raw('select ?', [1]).should.be.a.query('select ?', [5]);
     })
-    .to.throw(/to have.*SELECT \* FROM "t1" ~\[\]/);
+    .to.throw(/to have.*select \? ~\[1\]/);
+  });
+
+  it('can validate executed sql', function() {
+    return query.raw('select 1').then(function() {
+      adapter.should.have.executed('select 1');
+    });
+  });
+
+  it('produces error for mismatched executed sql', function() {
+    return query.raw('select 1').then(function() {
+      expect(function() {
+        adapter.should.have.executed('select');
+      })
+      .to.throw(/to have.*select ~\[\].*got.*select 1 ~\[\]/);
+    });
+  });
+
+  it('produces error for mismatched executed args', function() {
+    return query.raw('select ?', [1]).then(function() {
+      expect(function() {
+        adapter.should.have.executed('select ?', [2]);
+      })
+      .to.throw(/to have.*select \? ~\[2\].*got.*select \? ~\[1\]/);
+    });
+  });
+
+  it('can validate used clients', function() {
+    return query.raw('select 1').then(function() {
+      adapter.should.have.used.clients;
+      adapter.should.have.used.oneClient;
+      adapter.should.have.clientCount(1);
+    });
   });
 
 }));
