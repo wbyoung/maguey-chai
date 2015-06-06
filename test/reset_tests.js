@@ -1,5 +1,7 @@
 'use strict';
 
+require('./_helpers');
+
 var _ = require('lodash');
 var path = require('path');
 var base = path.dirname(__dirname) + '/';

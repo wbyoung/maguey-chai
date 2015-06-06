@@ -1,6 +1,6 @@
 'use strict';
 
-require('./helpers');
+require('./_helpers');
 
 describe('assertions', __query(function() {
   /* global query, adapter */

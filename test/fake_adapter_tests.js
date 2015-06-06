@@ -1,5 +1,7 @@
 'use strict';
 
+require('./_helpers');
+
 describe('fake adapter', __query(function() {
   /* global query, adapter */
 
