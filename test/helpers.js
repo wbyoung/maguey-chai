@@ -2,11 +2,11 @@
 
 var chai = require('chai');
 
-var createAdapter = require('../..').adapter;
+var createAdapter = require('..').adapter;
 var maguey = require('maguey');
 var EntryQuery = maguey.EntryQuery;
 
-chai.use(require('../..'));
+chai.use(require('..'));
 
 global.expect = chai.expect;
 global.should = chai.should();
