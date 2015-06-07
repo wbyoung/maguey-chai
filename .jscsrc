@@ -1,5 +1,6 @@
 {
   "preset": "airbnb",
+  "excludeFiles": ["node_modules/**", "coverage/**", "test/**"],
   "disallowEmptyBlocks": null,
   "disallowFunctionDeclarations": true,
   "disallowKeywordsOnNewLine": null,
@@ -23,8 +24,7 @@
   "requireSpaceAfterLineComment": true,
   "requireSpacesInsideObjectBrackets": "all",
   "requireTrailingComma": {
-    "ignoreSingleLine": true,
-    "ignoreSingleValue": true
+    "ignoreSingleLine": true
   },
   "safeContextKeyword": "self",
   "plugins": [
