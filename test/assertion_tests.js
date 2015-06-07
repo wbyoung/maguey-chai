@@ -29,6 +29,38 @@ describe('assertions', __query(function() {
     });
   });
 
+  it('can validate multiple executed sql', function() {
+    return query.raw('select 1')
+    .then(function() { return query.raw('select 1'); })
+    .then(function() {
+      adapter.should.have.executed('select 1', 'select 1');
+    });
+  });
+
+  it('can validate multiple executed sql via arrays', function() {
+    return query.raw('select 1')
+    .then(function() { return query.raw('select 1'); })
+    .then(function() {
+      adapter.should.have.executed(['select 1', 'select 1']); // array
+      adapter.should.have.executed(['select 1'], ['select 1']); // flatten
+    });
+  });
+
+  it('can validate executed sql via regex', function() {
+    return query.raw('select 1').then(function() {
+      adapter.should.have.executed(/select \d/);
+    });
+  });
+
+  it('cannot validate executed args via regex', function() {
+    return query.raw('select ?', ['1']).then(function() {
+      expect(function() {
+        adapter.should.have.executed('select ?', [/\d/]);
+      })
+      .to.throw(/to have.*select \? ~\[\/\\\\d\/\].*got.*select \? ~\[1\]/);
+    });
+  });
+
   it('produces error for mismatched executed sql', function() {
     return query.raw('select 1').then(function() {
       expect(function() {
@@ -44,6 +76,16 @@ describe('assertions', __query(function() {
         adapter.should.have.executed('select ?', [2]);
       })
       .to.throw(/to have.*select \? ~\[2\].*got.*select \? ~\[1\]/);
+    });
+  });
+
+  it('can validate attempted sql', function() {
+    adapter.fail(/.*/);
+    return query.raw('select 1').execute()
+    .throw('expected failure')
+    .catch(function(/*e*/) {
+      adapter.should.have.executed(/* nothing */);
+      adapter.should.have.attempted('select 1');
     });
   });
 
