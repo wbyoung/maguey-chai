@@ -46,4 +46,21 @@ describe('fake adapter', __query(function() {
     return adapter._disconnect();
   });
 
+  it('can scope expectations', function() {
+    var scope = adapter.scope.bind(adapter);
+    var unscope = adapter.unscope.bind(adapter);
+    return query.raw('select 1')
+    .then(scope)
+    .then(function() { return query.raw('select 2'); })
+    .then(function() {
+      adapter.should.have.executed('select 2');
+      adapter.should.have.used.oneClient;
+    })
+    .then(unscope)
+    .then(function() {
+      adapter.should.have.executed('select 1', 'select 2');
+      adapter.should.have.clientCount(2);
+    });
+  });
+
 }));
