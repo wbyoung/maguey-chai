@@ -70,6 +70,14 @@ describe('assertions', __query(function() {
     });
   });
 
+  it('produces error for un-executed sql', function() {
+    expect(function() {
+      adapter.should.have.executed('select');
+    })
+    .to.throw(/to have.*select ~\[\].*got \[\]$/);
+  });
+
+
   it('produces error for mismatched executed args', function() {
     return query.raw('select ?', [1]).then(function() {
       expect(function() {
