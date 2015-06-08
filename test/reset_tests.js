@@ -8,7 +8,8 @@ var base = path.dirname(__dirname) + '/';
 var magueyChai = require('..');
 
 var startsWithBase = _.ary(_.partial(_.startsWith, _, base), 1);
-var startsWithNodeModules = _.ary(_.partial(_.startsWith, _, 'node_modules'), 1);
+var startsWithNodeModules =
+  _.ary(_.partial(_.startsWith, _, 'node_modules'), 1);
 
 var required = function() {
   return _(require.cache)
