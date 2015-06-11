@@ -19,6 +19,17 @@ describe('fake adapter', __query(function() {
     });
   });
 
+  it('can generate sequences for queries', function() {
+    adapter.sequence(/.*/, 1);
+    return query.select('t1').then(function(result) {
+      result.should.eql({ fields: ['id'], rows: [{ id: 1 }] });
+    })
+    .then(function() { return query.select('t1'); })
+    .then(function(result) {
+      result.should.eql({ fields: ['id'], rows: [{ id: 2 }] });
+    });
+  });
+
   it('can produce failures', function() {
     adapter.fail(/.*/);
     return query.select('t1').execute()
